@@ -1,0 +1,14 @@
+.menu {
+  @apply bg-slate-200 mr-4 py-2 rounded-r-lg cursor-pointer;
+}
+.menu_link {
+  @apply flex items-center gap-3 px-10;
+}
+
+.menu_icon {
+  @apply text-xl;
+}
+
+.menu_link {
+  @apply font-semibold;
+}

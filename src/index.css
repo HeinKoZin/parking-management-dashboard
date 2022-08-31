@@ -4,5 +4,6 @@
 
 html,
 body {
-	@apply w-full h-full m-0;
+  @apply w-full h-full m-0;
+  background-color: #f6f8fc;
 }
