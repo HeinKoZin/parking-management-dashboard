@@ -4,34 +4,50 @@ import { FiUsers } from "react-icons/fi";
 import { FaUsersCog } from "react-icons/fa";
 import { ImUsers } from "react-icons/im";
 import styles from "./Sidebar.module.css";
+import { NavLink } from "react-router-dom";
 
 function Sidebar() {
+  let activeClassName = "bg-slate-200 mr-4 rounded-r-lg cursor-pointer";
   return (
     <div className="py-10 flex flex-col gap-4">
-      <div className={styles.menu}>
+      <NavLink
+        to="/"
+        className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      >
         <div className={styles.menu_link}>
           <MdSpaceDashboard className={styles.menu_icon} />
           <p className={styles.menu_text}>Dashboard</p>
         </div>
-      </div>
-      <div className={styles.menu}>
+      </NavLink>
+      <NavLink
+        to="/services"
+        className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      >
         <div className={styles.menu_link}>
           <FaUsersCog className={styles.menu_icon} />
           <p className={styles.menu_text}>Service</p>
         </div>
-      </div>
-      <div className={styles.menu}>
+      </NavLink>
+
+      <NavLink
+        to="/users"
+        className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      >
         <div className={styles.menu_link}>
           <FiUsers className={styles.menu_icon} />
           <p className={styles.menu_text}>User</p>
         </div>
-      </div>
-      <div className={styles.menu}>
+      </NavLink>
+
+      <NavLink
+        to="/employees"
+        className={({ isActive }) => (isActive ? activeClassName : undefined)}
+      >
         <div className={styles.menu_link}>
           <ImUsers className={styles.menu_icon} />
           <p className={styles.menu_text}>Employee</p>
         </div>
-      </div>
+      </NavLink>
     </div>
   );
 }
