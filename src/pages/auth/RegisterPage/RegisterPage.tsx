@@ -1,7 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { login } from "@apis/auth/login";
+import { register } from "@apis/auth/register";
+import React, { useRef } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function RegisterPage() {
+	const emailRef = useRef<any>();
+	const passwordRef = useRef<any>();
+	const nameRef = useRef<any>();
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token");
+
+	if (token) {
+		return <Navigate to={"/"}></Navigate>;
+	}
+
+	const registerHandle = async () => {
+		const name = nameRef.current?.value;
+		const email = emailRef.current?.value;
+		const password = passwordRef.current?.value;
+
+		!email ?? emailRef.current?.focus();
+		!password ?? passwordRef.current?.focus();
+
+		if (email && password && name) {
+			const data = await register({ name, email, password });
+
+			if (data.success === true) {
+				toast.success("Register success");
+				navigate("/login");
+			} else {
+				toast.error(data.message);
+			}
+		}
+	};
+
 	return (
 		<div className="w-full h-full">
 			<div className="w-full h-full flex justify-center items-center">
@@ -23,6 +56,7 @@ function RegisterPage() {
 								<input
 									type="text"
 									className="w-full border border-blue-400 rounded p-2 "
+									ref={nameRef}
 								/>
 								<label className="text-sm md:text-base font-semibold">
 									Email:
@@ -30,6 +64,7 @@ function RegisterPage() {
 								<input
 									type="text"
 									className="w-full border border-blue-400 rounded p-2 "
+									ref={emailRef}
 								/>
 								<label className="text-sm md:text-base font-semibold">
 									Password:
@@ -37,23 +72,14 @@ function RegisterPage() {
 								<input
 									type="password"
 									className="w-full border border-blue-400 rounded p-2"
+									ref={passwordRef}
 								/>
-								<label className="text-sm md:text-base font-semibold">
-									Phone:
-								</label>
-								<input
-									type="text"
-									className="w-full border border-blue-400 rounded p-2 "
-								/>
-								<label className="text-sm md:text-base font-semibold">
-									Address:
-								</label>
-								<input
-									type="text"
-									className="w-full border border-blue-400 rounded p-2 "
-								/>
+
 								<div className="pt-4">
-									<button className="w-full bg-blue-500 text-white py-2 px-10 rounded">
+									<button
+										className="w-full bg-blue-500 text-white py-2 px-10 rounded"
+										onClick={() => registerHandle()}
+									>
 										Register
 									</button>
 									<div className="flex justify-end items-center">

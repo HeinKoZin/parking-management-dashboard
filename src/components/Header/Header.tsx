@@ -1,30 +1,57 @@
-import React from "react";
+import { getMe, UserInformation } from "@apis/auth/me";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+	const navigate = useNavigate();
+	const token = localStorage.getItem("token") ?? undefined;
+
+	if (!token) {
+		navigate("/");
+	}
+
+	const [user, setUser] = useState<UserInformation["data"]>();
+
+	const getUser = async () => {
+		const me = await getMe(token);
+		if (me) {
+			setUser(me.data);
+		}
+	};
+
+	const handleLogout = () => {
+		navigate("/login");
+		localStorage.removeItem("token");
+	};
+
+	useEffect(() => {
+		getUser();
+	}, []);
+
 	return (
-		<div
-			className={
-				"w-full h-[64px] flex justify-between items-center bg-white text-white border-b border-slate-300 shadow-sm"
-			}
-		>
-			<div className="w-[10%] bg-blue-600 h-full flex justify-center font-semibold  font-quicksand items-center text-white">
-				User Management
+		<div className="navbar bg-blue-600 text-white">
+			<div className="flex-1 px-2 lg:flex-none">
+				<a className="text-lg font-bold">User Management</a>
 			</div>
-			<div className="w-[90%] flex justify-between items-center px-10">
-				<div>
-					<input
-						type="text"
-						className="border border-slate-300 py-2 px-4 rounded-full"
-						placeholder="Search....."
-					/>
-				</div>
-				<div className="flex items-center gap-2 bg-blue-100 px-3 py-1 rounded-full">
-					<p className="text-slate-900">Admin</p>
-					<img
-						src="/p.jpg"
-						alt=""
-						className="w-[35px] h-[35px] rounded-full border border-slate-300 p-1"
-					/>
+			<div className="flex justify-end flex-1 px-2">
+				<div className="flex items-stretch">
+					<a className="btn btn-ghost rounded-btn">{}</a>
+					<div className="dropdown dropdown-end">
+						<label tabIndex={0} className="btn btn-ghost rounded-btn ">
+							{user?.user.name}
+						</label>
+						<ul
+							tabIndex={0}
+							className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4 text-slate-600"
+						>
+							<li>
+								<a>Profile</a>
+							</li>
+							<li onClick={() => handleLogout()}>
+								<a>Logout</a>
+							</li>
+						</ul>
+					</div>
 				</div>
 			</div>
 		</div>

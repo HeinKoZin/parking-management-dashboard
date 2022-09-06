@@ -1,15 +1,13 @@
 import Header from "@components/Header";
 import Sidebar from "@components/SideBar";
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 
 function MainLayout() {
-	const navigate = useNavigate();
-
 	const token = localStorage.getItem("token");
 
 	if (!token) {
-		navigate("/auth/login");
+		return <Navigate to={"/login"}></Navigate>;
 	}
 
 	return (

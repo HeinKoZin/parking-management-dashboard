@@ -1,6 +1,7 @@
 import { login } from "@apis/auth/login";
 import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function LoginPage() {
 	const emailRef = useRef<any>();
@@ -9,7 +10,7 @@ function LoginPage() {
 	const token = localStorage.getItem("token");
 
 	if (token) {
-		navigate("/");
+		return <Navigate to={"/"}></Navigate>;
 	}
 
 	const loginHandle = async () => {
@@ -21,7 +22,13 @@ function LoginPage() {
 
 		if (email && password) {
 			const data = await login({ email, password });
+
+			if (data.success === false) {
+				toast.error("Wrong Credentials!");
+			}
+
 			if ("data" in data) {
+				toast.success("Login success");
 				localStorage.setItem("token", data.data.token);
 				navigate("/");
 			}
